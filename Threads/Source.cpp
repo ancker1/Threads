@@ -6,6 +6,7 @@
 using namespace std;
 
 int primes[] = { 2,3,5,7,11,13,17,19,23,29,31,37,41,43,47 };
+bool done = false;
 mutex arr_mutex;
 
 void printContent(vector<int> data)
@@ -54,13 +55,13 @@ void insertNum(vector<int>& arr)
 	while (carryon(arr))
 	{
 		this_thread::sleep_for(std::chrono::milliseconds(100));
+		if (done)
+			break;
 		arr_mutex.lock();
 		arr.push_back(rand() % 50 + 1);
 		cout << "Added random numbers: ";
 		printContent(arr);
 		arr_mutex.unlock();
-		if (!carryon(arr))
-			break;
 	}
 }
 void removeNums(vector<int>& arr)
@@ -81,6 +82,8 @@ void removeNums(vector<int>& arr)
 		printContent(arr);
 		arr_mutex.unlock();
 	}
+	done = true;
+
 }
 
 
